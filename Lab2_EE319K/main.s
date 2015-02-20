@@ -47,8 +47,8 @@ Start
     STR R0, [R1]   
 
 	
-	LDR R1, =GPIO_PORTF_CR_R        ;enable commit for Port F
-    MOV R0, #0xFF                   ;1 means allow access
+	LDR R1, =GPIO_PORTF_CR_R        ;enable commit for Port F 	indexed
+    MOV R0, #0xFF                   ;1 means allow access	immediate
     STR R0, [R1]                    
 
 
@@ -83,7 +83,7 @@ Start
 	STR R0, [R1]
 
 						
-	LDR R1, =GPIO_PORTF_PUR_R 		;enable pull up resistor
+	LDR R1, =GPIO_PORTF_PUR_R 		;enable pull up register (?)
 	LDR R0, [R1]
 	ORR R0, #0x10 					;enable PUR for bit 4 
 	STR R0, [R1]
@@ -99,7 +99,7 @@ Start
 	
 	
 loop  
-	ADD R5, #3250					;set R5 to 3250 
+	ADD R5, #3250					;set R5 to 3250			Literal addressing
 delay								;delay function 
 		ADD R5, #-1					;subtract one from R5
 		CMP R5, #0					;if R5 greater than zero, branch to delay
@@ -107,7 +107,7 @@ delay								;delay function
 		
 		LDR R2, =GPIO_PORTF_DATA_R
 		LDR R6, =GPIO_PORTF_DATA_R	
-		LDR R6, [R6]				;load data from Port F
+		LDR R6, [R6]				;load data from Port F	Register indirect
 		AND R6, #0x10 				;masking for bit 4
 		CMP R6, #0x10 				;check and see is bit 4 is "1" (switch not pressed)
 		BEQ turnon					;if switch is not pressed, take the branch
@@ -116,7 +116,7 @@ delay								;delay function
 		AND R6, #0x04 				;masking for bit 2
 		EOR R6, R6, #0x4			;NOT bit 2
 		STR R6, [R2]				;store result back to Port F 
-	B loop							;Branch back to beginning of loop
+	B loop							;Branch back to beginning of loop	PC relative
 		
 turnon								;turning or keeping the LED on 
 		LDR R1, =GPIO_PORTF_DATA_R		

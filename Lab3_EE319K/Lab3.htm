@@ -1,13 +1,13 @@
 <!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <html><head>
-<title>Static Call Graph - [.\Lab2.axf]</title></head>
+<title>Static Call Graph - [.\Lab3.axf]</title></head>
 <body><HR>
-<H1>Static Call Graph for image .\Lab2.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Tue Feb 17 16:24:48 2015
+<H1>Static Call Graph for image .\Lab3.axf</H1><HR>
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5.03 [Build 76]: Last Updated: Thu Feb 19 14:22:55 2015
 <BR><P>
-<H3>Maximum Stack Usage =          0 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =         12 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-
+Reset_Handler &rArr; Start &rArr; TExaS_Init &rArr; UART0_Init
 <P>
 <H3>
 Functions with no stack information
@@ -127,9 +127,9 @@ Function Pointers
  <LI><a href="#[20]">Timer2B_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
  <LI><a href="#[2b]">Timer3A_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
  <LI><a href="#[2c]">Timer3B_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
- <LI><a href="#[4a]">Timer4A_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
+ <LI><a href="#[4a]">Timer4A_Handler</a> from texas.o(.text) referenced from startup.o(RESET)
  <LI><a href="#[4b]">Timer4B_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
- <LI><a href="#[4c]">Timer5A_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
+ <LI><a href="#[4c]">Timer5A_Handler</a> from texas.o(.text) referenced from startup.o(RESET)
  <LI><a href="#[4d]">Timer5B_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
  <LI><a href="#[f]">UART0_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
  <LI><a href="#[10]">UART1_Handler</a> from startup.o(RESET) referenced from startup.o(RESET)
@@ -162,7 +162,10 @@ Function Pointers
 Global Symbols
 </H3>
 <P><STRONG><a name="[7a]"></a>Reset_Handler</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, startup.o(RESET))
-<BR><BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
+<BR><BR>[Stack]<UL><LI>Max Depth = 12 + Unknown Stack Size
+<LI>Call Chain = Reset_Handler &rArr; Start &rArr; TExaS_Init &rArr; UART0_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
 </UL>
 
 <P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, startup.o(RESET))
@@ -488,13 +491,7 @@ Global Symbols
 <P><STRONG><a name="[2c]"></a>Timer3B_Handler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup.o(RESET))
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
-<P><STRONG><a name="[4a]"></a>Timer4A_Handler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup.o(RESET))
-<BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
-</UL>
 <P><STRONG><a name="[4b]"></a>Timer4B_Handler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup.o(RESET))
-<BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
-</UL>
-<P><STRONG><a name="[4c]"></a>Timer5A_Handler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup.o(RESET))
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
 <P><STRONG><a name="[4d]"></a>Timer5B_Handler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup.o(RESET))
@@ -573,8 +570,81 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
 </UL>
 <P><STRONG><a name="[7d]"></a>Start</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, main.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Handler
+<BR><BR>[Stack]<UL><LI>Max Depth = 12 + Unknown Stack Size
+<LI>Call Chain = Start &rArr; TExaS_Init &rArr; UART0_Init
 </UL>
+<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Reset_Handler
+</UL>
+
+<P><STRONG><a name="[83]"></a>ADC1_Init</STRONG> (Thumb, 170 bytes, Stack size 8 bytes, texas.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = ADC1_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+</UL>
+
+<P><STRONG><a name="[82]"></a>SetCode</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, texas.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+</UL>
+
+<P><STRONG><a name="[81]"></a>UART0_Init</STRONG> (Thumb, 162 bytes, Stack size 8 bytes, texas.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = UART0_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+</UL>
+
+<P><STRONG><a name="[80]"></a>SetCourse</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, texas.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+</UL>
+
+<P><STRONG><a name="[7f]"></a>PLL_Init</STRONG> (Thumb, 118 bytes, Stack size 0 bytes, texas.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TExaS_Init
+</UL>
+
+<P><STRONG><a name="[7e]"></a>TExaS_Init</STRONG> (Thumb, 282 bytes, Stack size 4 bytes, texas.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = TExaS_Init &rArr; UART0_Init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PLL_Init
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetCourse
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART0_Init
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetCode
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC1_Init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Start
+</UL>
+
+<P><STRONG><a name="[85]"></a>StopTimer4</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
+
+<P><STRONG><a name="[86]"></a>StartTimer4</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
+
+<P><STRONG><a name="[4a]"></a>Timer4A_Handler</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, texas.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
+</UL>
+<P><STRONG><a name="[84]"></a>ADC1_In</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, texas.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer5A_Handler
+</UL>
+
+<P><STRONG><a name="[4c]"></a>Timer5A_Handler</STRONG> (Thumb, 34 bytes, Stack size 4 bytes, texas.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Timer5A_Handler
+</UL>
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC1_In
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> startup.o(RESET)
+</UL>
+<P><STRONG><a name="[87]"></a>TExaS_Stop</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
+
+<P><STRONG><a name="[88]"></a>copy</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
+
+<P><STRONG><a name="[89]"></a>SetMode</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
+
+<P><STRONG><a name="[8a]"></a>UART0_InChar</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
+
+<P><STRONG><a name="[8b]"></a>UART0_InCharNonBlocking</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
+
+<P><STRONG><a name="[8c]"></a>UART0_OutChar</STRONG> (Thumb, 200 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
+
+<P><STRONG><a name="[8d]"></a>UART0_OutCharNonBlock</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, texas.o(.text), UNUSED)
 <P>
 <H3>
 Local Symbols
