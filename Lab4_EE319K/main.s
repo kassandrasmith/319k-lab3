@@ -39,6 +39,10 @@ GPIO_PORTF_DEN_R        EQU 0x4002551C
 NVIC_ST_CTRL_R          EQU 0xE000E010
 NVIC_ST_RELOAD_R        EQU 0xE000E014
 NVIC_ST_CURRENT_R       EQU 0xE000E018
+GPIO_PORTE_PCTL_R       EQU   0x4002452C
+GPIO_PORTE_LOCK_R 		EQU   0x40025520
+GPIO_PORTE_CR_R 		EQU   0x40025524
+GPIO_PORTE_AMSEL_R      EQU   0x40024528
            THUMB
            AREA    DATA, ALIGN=4
 SIZE       EQU    50
@@ -64,12 +68,92 @@ TimePt     SPACE  4
 
 Start BL   TExaS_Init  ; running at 80 MHz, scope voltmeter on PD3
 ; initialize Port E
+    LDR R1, =SYSCTL_RCGCGPIO_R ;activate clock
+	LDR R0, [R1]
+	ORR R0, R0, #0x30 ;set bit 4 to turn on clock
+	STR R0, [R1] ;put it back
+	NOP ;wait for stabilization,
+	NOP
+	LDR R1, =GPIO_PORTE_LOCK_R ;unlock the lock register
+	LDR R0, =0x4C4F434B ;unlock GPIO Port E Commit Register
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTE_CR_R;enable commit for Port E
+	MOV R0, #0xFF ;1 means allow access
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTE_AMSEL_R ;disable analog functionality
+	LDR R0, [R1]
+	BIC R0, #0x03 ;Clear bits 1 and 0
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTE_PCTL_R ;configure as GPIO
+	LDR R0, [R1]
+	BIC R0, #0x14 ;0 means configure Port E as GPIO
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTE_DIR_R ;set direction register
+	LDR R0, [R1]
+	ORR R0,#0x02 ;PORTE bit 1 is set to 1
+	BIC R0,#0x01 ;clear bit 0
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTE_AFSEL_R ;disable alternate function select
+	LDR R0, [R1]
+	BIC R0, #0x14 ;We don't need the pins' special functions so we set it to 0
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTE_DEN_R ;Set DEN so that the bits are useable, Port E digital port
+	LDR R0, [R1]
+	ORR R0, #0x03 
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTE_DATA_R
+	LDR R0, [R1]
+	ORR R0, #0x02 ;starting the program with the LED on
+	STR R0, [R1]
+	AND R5, R5, #0 ;clearing register 5, to be used as counter for delay
 ; initialize Port F
+	LDR R1, =GPIO_PORTF_DIR_R ;set direction register
+	LDR R0, [R1]
+	ORR R0,#0x02 ;PORTF bit 1 is set to 1
+	BIC R0,#0x01 ;clear bit 0
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTF_AFSEL_R ;disable alternate function select
+	LDR R0, [R1]
+	BIC R0, #0x14 ;We don't need the pins' special functions so we set it to 0
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTF_DEN_R ;Set DEN so that the bits are useable, Port E digital port
+	LDR R0, [R1]
+	ORR R0, #0x03 
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTF_DATA_R
 ; initialize debugging dump, including SysTick
 
 
       CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  BL   Debug_Capture
+	ADD R5, #1018 ;set R5 to 3250
+	MUL R5, R5 
+delay ;delay function
+	ADD R5, #-1 ;subtract one from R5
+	CMP R5, #0 ;if R5 greater than zero, branch to delay
+	BGT delay ;if R5 is equal to zero, proceed
+	
+	LDR R2, =GPIO_PORTE_DATA_R
+	LDR R6, =GPIO_PORTE_DATA_R
+	
+	LDR R6, [R6] ;load data from Port E
+	
+	AND R6, #0x01 ;masking for bit 0
+	CMP R6, #0x01 ;check and see is bit 0 is "1" (switch not pressed)
+	BNE turnon ;if switch is not pressed, take the branch
+	LDR R6, =GPIO_PORTE_DATA_R
+	LDR R6, [R6] ;load data from Port E
+	AND R6, #0x02 ;masking for bit 1
+	EOR R6, R6, #0x2 ;NOT bit 1
+	STR R6, [R2] ;store result back to Port E
+	B loop ;Branch back to beginning of loop
+turnon ;turning or keeping the LED on
+	LDR R1, =GPIO_PORTE_DATA_R
+	LDR R2, =GPIO_PORTE_DATA_R
+	LDR R1, [R1] ;load data from Port E
+	ORR R1, #0x02 ;set bit 1 to "1"
+	STR R1, [R2] ;store result back to Port E
+	;end subroutine
 ;heartbeat
 ; Delay
 ;input PE0 test output PE1
@@ -85,7 +169,29 @@ loop  BL   Debug_Capture
 Debug_Init
       
 ; init SysTick
-
+	  LDR R1, =NVIC_ST_CTRL_R
+	  MOV R0, #0
+	  STR R0, [R1]
+	  LDR R1, =NVIC_ST_RELOAD_R
+	  LDR R0, =0x00FFFFFF
+	  STR R0, [R1]
+	  LDR R1, =NVIC_ST_CTRL_R
+	  MOV R0, #0x05
+	  STR R0, [R1]
+i     RN 0 
+Array RN 1
+	  MOV i, #0
+	  MOV R2, #0xF
+loop2 STR R2, [Array,i] 
+	  ADD i, #2
+	  CMP i, #20
+	  BLO loop2
+	  LDR R1, =DataBuffer
+	  LDR R0, =DataPt
+	  STR R1, [R0] 
+	  LDR R1, =TimeBuffer
+	  LDR R0, =TimePt
+	  STR R1, [R0]  
       BX LR
 
 ;------------Debug_Capture------------
@@ -95,10 +201,33 @@ Debug_Init
 ; Modifies: none
 ; Note: push/pop an even number of registers so C compiler is happy
 Debug_Capture
-
+      PUSH {R4, R5, R6, LR} 
+	  LDR R0, =GPIO_PORTE_DATA_R
+	  LDR R1, =NVIC_ST_CTRL_R
+	  LDR R2, [R0]
+	  LDR R3, [R0]
+	  AND R2, #0x01
+	  AND R3, #0x02
+	  LSR R3, #1 
+	  LSL R2, #4 
+	  ADD R2, R2, R3; masking stuff ends here
+	  LDR R4, = DataPt
+	  LDR R6, = DataBuffer 
+	  LDR R5, [R4] 
+	  CMP R5, #SIZE 
+	  BHS done; full?
+	  STR R2, [R6,R5] 
+	  ADD R5, #1 
+	  STR R5, [R4] 
+	  LDR R4, = TimePt
+	  LDR R5, = TimeBuffer
+	  LDR R6, [R4] 
+	  STR R1, [R5,R6]
+	  ADD R6, #1
+	  STR R6, [R4] 
+done  POP {R4, R5, R6, LR}
       BX LR
 
 
     ALIGN                           ; make sure the end of this section is aligned
     END                             ; end of file
-        

@@ -1,8 +1,8 @@
 ;****************** main.s ***************
 ; Program written by: Kassandra Smith and Madhumitha Venkataraman
 ; Date Created: 2/17/2015 
-; Last Modified: 2/17/2015 
-; Section 1-2pm     TA: Wooseok Lee
+; Last Modified: 2/21/2015 
+; Section Tue 4-5pm     TA: Jenny Chen
 ; Lab number: 3
 ; Brief description of the program
 ;   If the switch is presses, the LED toggles at 8 Hz

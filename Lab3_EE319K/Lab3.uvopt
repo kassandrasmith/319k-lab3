@@ -77,8 +77,8 @@
       </OPTFL>
       <CpuCode>255</CpuCode>
       <DebugOpt>
-        <uSim>1</uSim>
-        <uTrg>0</uTrg>
+        <uSim>0</uSim>
+        <uTrg>1</uTrg>
         <sLdApp>1</sLdApp>
         <sGomain>1</sGomain>
         <sRbreak>1</sRbreak>
@@ -99,7 +99,7 @@
         <tPdscDbg>0</tPdscDbg>
         <sRunDeb>0</sRunDeb>
         <sLrtime>0</sLrtime>
-        <nTsel>2</nTsel>
+        <nTsel>3</nTsel>
         <sDll></sDll>
         <sDllPa></sDllPa>
         <sDlgDll></sDlgDll>
@@ -131,7 +131,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDARM</Key>
-          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(3006=853,376,1249,726,1)(3004=443,176,839,454,0)</Name>
+          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(3006=257,309,653,659,1)(3004=443,176,839,454,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -188,18 +188,12 @@
       </DebugFlag>
       <LintExecutable></LintExecutable>
       <LintConfigFile></LintConfigFile>
-      <LogicAnalyzers>
-        <Wi>
-          <IntNumber>0</IntNumber>
-          <FirstString>((PORTE &amp; 0x00000002) &gt;&gt; 1 &amp; 0x2) &gt;&gt; 1</FirstString>
-          <SecondString>FF00000000000000000000000000E0FFFFFFEF410100000000000000000000000000000028504F5254452026203078303030303030303229203E3E2031000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000E03F12000000000000000000000000000000000000006C020000</SecondString>
-        </Wi>
-        <Wi>
-          <IntNumber>1</IntNumber>
-          <FirstString>((PORTE &amp; 0x00000001) &amp; 0x1) &gt;&gt; 0</FirstString>
-          <SecondString>0080000000000000000000000000E0FFFFFFEF410100000000000000000000000000000028504F52544520262030783030303030303031290000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000002000000000000000000E03F12000000000000000000000000000000000000006C020000</SecondString>
-        </Wi>
-      </LogicAnalyzers>
+      <SystemViewers>
+        <Entry>
+          <Name>System Viewer\GPIOE</Name>
+          <WinId>35905</WinId>
+        </Entry>
+      </SystemViewers>
     </TargetOption>
   </Target>
 
@@ -217,7 +211,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>271</TopLine>
+      <TopLine>276</TopLine>
       <CurrentLine>277</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Startup.s</PathWithFileName>
@@ -233,8 +227,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>89</TopLine>
-      <CurrentLine>94</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.s</PathWithFileName>
       <FilenameWithoutPath>main.s</FilenameWithoutPath>

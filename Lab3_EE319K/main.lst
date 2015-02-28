@@ -8,8 +8,8 @@ ARM Macro Assembler    Page 1
     2 00000000         ; Program written by: Kassandra Smith and Madhumitha Ven
                        kataraman
     3 00000000         ; Date Created: 2/17/2015 
-    4 00000000         ; Last Modified: 2/17/2015 
-    5 00000000         ; Section 1-2pm     TA: Wooseok Lee
+    4 00000000         ; Last Modified: 2/21/2015 
+    5 00000000         ; Section Tue 4-5pm     TA: Jenny Chen
     6 00000000         ; Lab number: 3
     7 00000000         ; Brief description of the program
     8 00000000         ;   If the switch is presses, the LED toggles at 8 Hz
