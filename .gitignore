@@ -1,3 +1,23 @@
+#Keil Files
+*.axf
+*.build_log.htm
+*.htm
+*.lnp
+*.map
+*.plg
+*.tra
+*uv.gui
+*.uvgui.think
+*.uvgui_think.bak
+*.uvopt
+*.uvproj
+*.dep
+*.bak
+*.d
+*.o
+*.lst
+*.ie
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
